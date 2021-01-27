@@ -28,8 +28,15 @@
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
-
             </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=IsDefault}"
+                        Value="True">
+
+                    <Setter Property="Control.Background" Value="Black" />
+
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
         <Style x:Key="Rounded3" TargetType="Button">
             <Setter Property="Template">
@@ -73,6 +80,8 @@
                 <Border BorderBrush="#FF179AC8" BorderThickness="2" Grid.ColumnSpan="6" Grid.Row="3" />
                 <Border BorderBrush="#FF179AC8" BorderThickness="2" Grid.ColumnSpan="6" Grid.Row="4" />
             </Grid>
+            <TextBlock x:Name="tb_time" Canvas.Left="335" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="25" Height="35" Width="115" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
+            <TextBlock x:Name="tb_poin" Canvas.Left="490" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="25" Height="35" Width="115" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
         </Canvas>
 
     </Grid>

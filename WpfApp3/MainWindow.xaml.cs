@@ -29,6 +29,9 @@ namespace WpfApp3
         int count;
         int choise_x;
         int choise_y;
+        int poin;
+        int time;
+        System.Windows.Threading.DispatcherTimer timer;
         public MainWindow()
         {
             InitializeComponent();
@@ -36,6 +39,14 @@ namespace WpfApp3
             choise_y = -1;
             size = 5;
             need = 5 / 2 + 1;
+            poin = 0;
+            tb_poin.Text = poin.ToString();
+            time = 0;
+            timer = new System.Windows.Threading.DispatcherTimer();
+            timer.Tick += new EventHandler(time_change);
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Start();
+            tb_time.Text = time.ToString();
             use_pos = new int[size, size];
             colors = new List<string>() {"Rounded", "Rounded2", "Rounded3" };
             list = new Dictionary<int, Button>();
@@ -89,7 +100,13 @@ namespace WpfApp3
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
+            try
+            {
+                btn.IsDefault = false;
+            }
+            finally { }
             temp_button = btn;
+            btn.IsDefault = true;
             choise_x = Grid.GetColumn(btn);
             choise_y = Grid.GetRow(btn);
         }
@@ -125,10 +142,16 @@ namespace WpfApp3
             }
         }
 
+        private void time_change(object source, EventArgs e)
+        {
+            tb_time.Text = time.ToString(); 
+            time++;
+        }
+
         private bool check()
         {
             bool t = false;
-            for (int i = 0; i < size - need + 1; i++)
+            for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size - need + 1; j++)
                 {
@@ -147,8 +170,15 @@ namespace WpfApp3
                             use_pos[i, j] = 0;
                             use_pos[i, j + 1] = 0;
                             use_pos[i, j + 2] = 0;
+                            poin += 10;
                         }
                     }
+                }
+            }
+            for (int i = 0; i < size - need + 1; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
                     if (use_pos[i, j] == 1 && use_pos[i + 1, j] == 1 && use_pos[i + 2, j] == 1)
                     {
                         Style temp_style = list[i * 10 + j].Style;
@@ -164,10 +194,14 @@ namespace WpfApp3
                             use_pos[i, j] = 0;
                             use_pos[i + 1, j] = 0;
                             use_pos[i + 2, j] = 0;
+                            poin += 10;
                         }
                     }
                 }
             }
+            tb_poin.Text = poin.ToString();
+            if (grid_main.Children.Count == 0)
+                t = false;
             return t;
         }
     }
